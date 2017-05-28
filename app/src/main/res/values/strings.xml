@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Clicker</string>
+    <string name="clickView">0 CLICKS</string>
+    <string name="clickPSView">0 clicks per second</string>
+    <string name="clicker">CLICK</string>
+    <string name="store">STORE</string>
+    <string name="creditsView">Programming: HELLCAT-ZULU; Inspiration: my family</string>
+    <string name="credits">CREDITS</string>
+    <string name="title_activity_main">Clicker</string>
+</resources>

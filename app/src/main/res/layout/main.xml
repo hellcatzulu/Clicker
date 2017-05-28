@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:foregroundGravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/clickView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/clickView"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textSize="36sp" />
+
+    <Button
+        android:id="@+id/clicker"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_margin="5dp"
+        android:text="@string/clicker"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/clickPSView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/clickPSView"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+    <Button
+        android:id="@+id/store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/store"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+    <Button
+        android:id="@+id/credits"
+        style="@android:style/Widget.DeviceDefault.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/credits"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+
+    <TextView
+        android:id="@+id/creditsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/creditsView"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
+</LinearLayout>
