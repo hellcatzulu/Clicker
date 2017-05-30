@@ -41,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:enabled="false"
         android:text="@string/store"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 
@@ -50,7 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/credits"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:onClick="viewCredits" />
 
     <TextView
         android:id="@+id/creditsView"
