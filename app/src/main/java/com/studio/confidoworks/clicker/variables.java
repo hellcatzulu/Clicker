@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 class variables
 {
     private static final String PREFS_NAME = "var";
-     Context app;
-    //public String var;
-    //public int var1
+    Context app;
 
     static int clicks;
     static int cps;
