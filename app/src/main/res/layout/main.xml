@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/clickView"
+        android:text="@string/clickViewBase"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         android:textSize="36sp" />
@@ -25,14 +25,15 @@
         android:layout_margin="5dp"
         android:text="@string/clicker"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:onClick="click" />
 
     <TextView
         android:id="@+id/clickPSView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/clickPSView"
+        android:text="@string/clickPSViewBase"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 
