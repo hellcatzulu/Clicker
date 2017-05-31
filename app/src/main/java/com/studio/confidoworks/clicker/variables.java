@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 class variables
 {
     private static final String PREFS_NAME = "var";
-    Context app;
-
+    private Context app;
     static int clicks;
     static int cps;
     static int clicksPC;
@@ -16,8 +15,9 @@ class variables
     static int store2Num;
     static int store2Price;
 
-    SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
-    SharedPreferences.Editor varSaver = varReader.edit();
+    private SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+    private SharedPreferences.Editor varSaver = varReader.edit();
+
 
     void load()
     {
@@ -40,4 +40,9 @@ class variables
         varSaver.putInt("store2Num", store2Num);
         varSaver.putInt("store2Price", store2Price);
     }
+
+//    private void setApp(Context app)
+//    {
+//        this.app = app;
+//    }
 }

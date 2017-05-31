@@ -60,5 +60,4 @@ public class main extends Activity
             creditsView.setVisibility(View.GONE);
         }
     }
-
 }
