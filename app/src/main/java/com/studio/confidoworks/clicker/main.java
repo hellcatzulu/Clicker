@@ -1,12 +1,12 @@
 package com.studio.confidoworks.clicker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.content.Context;
 
 public class main extends Activity
 {
@@ -36,8 +36,8 @@ public class main extends Activity
     protected void onResume()
     {
         super.onResume();
-        clickView.setText(variables.clicks + getString(R.string.clickView));
-        clickPSView.setText(variables.cps + getString(R.string.clickPSView));
+        clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+        clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class main extends Activity
     public void click(View clicker)
     {
         variables.clicks = variables.clicks + variables.clicksPC;
-        clickView.setText(variables.clicks + getString(R.string.clickView));
+        clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
     }
 
     public void viewCredits (View credits)
