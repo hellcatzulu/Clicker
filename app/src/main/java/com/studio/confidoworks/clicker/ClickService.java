@@ -11,7 +11,7 @@ public class ClickService extends IntentService
     {
         public void run()
         {
-            variables.clicks = variables.clicks + variables.clicksPC;
+            variables.clicks = variables.clicks + variables.cps;
         }
     };
     public ClickService()
