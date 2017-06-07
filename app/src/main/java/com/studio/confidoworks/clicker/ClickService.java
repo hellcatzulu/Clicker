@@ -6,8 +6,8 @@ import android.os.Handler;
 
 public class ClickService extends IntentService
 {
-    Handler cps = new Handler();
-    Runnable addClicks = new Runnable()
+    private final Handler cps = new Handler();
+    private final Runnable addClicks = new Runnable()
     {
         public void run()
         {

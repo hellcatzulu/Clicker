@@ -9,4 +9,9 @@
     <string name="title_activity_main">Clicker</string>
     <string name="clickView">%1$d CLICKS</string>
     <string name="clickPSView">%1$d clicks per second</string>
+    <!-- <plurals name="clickPSView">
+        <item quantity="zero">0 clicks per second</item>
+        <item quantity="one">1 click per second</item>
+        <item quantity="other">%1$d clicks per second</item>
+    </plurals> -->
 </resources>

@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 public class main extends Activity
 {
-    public static final String PREFS_NAME="save";
+    private static final String PREFS_NAME="save";
     public static boolean run;
-    Context app = this;
+    private final Context app = this;
     //TextView clickView = (TextView)findViewById(R.id.clickView);
     //TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
     //TextView creditsView  = (TextView)findViewById(R.id.creditsView);
@@ -71,7 +71,7 @@ public class main extends Activity
         }
     }
 
-    public void load()
+    private void load()
     {
         SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
         variables.clicks = varReader.getInt("clicks", 0);
@@ -83,7 +83,7 @@ public class main extends Activity
         variables.store2Price = varReader.getInt("store2Price", 2);
     }
 
-    public void fullSave()
+    private void fullSave()
     {
         SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor varSaver = varReader.edit();
