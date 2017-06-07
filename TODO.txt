@@ -1,0 +1,4 @@
++ Add fragment for time away
++ Add store to see CPS in action
++ Check service on Android 5+
++ Check interface for performance issues
