@@ -11,14 +11,13 @@ import android.widget.TextView;
 public class main extends Activity
 {
     public static final String PREFS_NAME="save";
-    TextView clickView = (TextView)findViewById(R.id.clickView);
-    TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
-    TextView creditsView  = (TextView)findViewById(R.id.creditsView);
     public static boolean run;
-
     Context app = this;
-    SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
-    SharedPreferences.Editor varSaver = varReader.edit();
+    //TextView clickView = (TextView)findViewById(R.id.clickView);
+    //TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
+    //TextView creditsView  = (TextView)findViewById(R.id.creditsView);
+    //SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+    //SharedPreferences.Editor varSaver = varReader.edit();
 
 
     @Override
@@ -36,6 +35,8 @@ public class main extends Activity
     protected void onResume()
     {
         super.onResume();
+        TextView clickView = (TextView)findViewById(R.id.clickView);
+        TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
     }
@@ -53,11 +54,13 @@ public class main extends Activity
     public void click(View clicker)
     {
         variables.clicks = variables.clicks + variables.clicksPC;
+        TextView clickView = (TextView)findViewById(R.id.clickView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
     }
 
     public void viewCredits (View credits)
     {
+        TextView creditsView  = (TextView)findViewById(R.id.creditsView);
         if (creditsView.getVisibility() == View.GONE)
         {
             creditsView.setVisibility(View.VISIBLE);
@@ -70,6 +73,7 @@ public class main extends Activity
 
     public void load()
     {
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
         variables.clicks = varReader.getInt("clicks", 0);
         variables.cps = varReader.getInt("cps", 0);
         variables.clicksPC = varReader.getInt("clicksPC", 1);
@@ -81,6 +85,8 @@ public class main extends Activity
 
     public void fullSave()
     {
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor varSaver = varReader.edit();
         varSaver.putInt("clicks", variables.clicks);
         varSaver.putInt("cps", variables.cps);
         varSaver.putInt("clicksPC", variables.clicksPC);
@@ -88,5 +94,6 @@ public class main extends Activity
         varSaver.putInt("store1Price", variables.store1Price);
         varSaver.putInt("store2Num", variables.store2Num);
         varSaver.putInt("store2Price", variables.store2Price);
+        varSaver.apply();
     }
 }
