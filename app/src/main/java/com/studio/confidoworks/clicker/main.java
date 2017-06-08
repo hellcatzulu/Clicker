@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,22 +14,40 @@ public class main extends Activity
     private static final String PREFS_NAME="save";
     public static boolean run;
     private final Context app = this;
-    //TextView clickView = (TextView)findViewById(R.id.clickView);
-    //TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
-    //TextView creditsView  = (TextView)findViewById(R.id.creditsView);
-    //SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
-    //SharedPreferences.Editor varSaver = varReader.edit();
-
+    private final Handler update = new Handler();
+    private final Runnable updateClicks = new Runnable()
+    {
+      public void run()
+      {
+          if (main.run)
+          {
+              TextView clickView = (TextView)findViewById(R.id.clickView);
+              clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+              update.postDelayed(updateClicks, 1000);
+          }
+          else if (!main.run)
+          {
+              update.removeCallbacksAndMessages(null);
+          }
+      }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
         run = true;
         load();
         Intent activeClick = new Intent(this, ClickService.class);
         this.startService(activeClick);
+        update.post(updateClicks);
     }
 
     @Override
@@ -42,13 +61,26 @@ public class main extends Activity
     }
 
     @Override
+    protected void onPause()
+    {
+        super.onPause();
+        fullSave();
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor varSaver = varReader.edit();
+        varSaver.putLong("paused", System.currentTimeMillis());
+        varSaver.apply();
+    }
+
+    @Override
     protected void onStop()
     {
         super.onStop();
         run = false;
-        Intent activeClick = new Intent(this, ClickService.class);
-        this.startService(activeClick);
         fullSave();
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor varSaver = varReader.edit();
+        varSaver.putLong("stopped", System.currentTimeMillis());
+        varSaver.apply();
     }
 
     public void click(View clicker)
@@ -60,14 +92,20 @@ public class main extends Activity
 
     public void viewCredits (View credits)
     {
-        TextView creditsView  = (TextView)findViewById(R.id.creditsView);
-        if (creditsView.getVisibility() == View.GONE)
+        TextView creditsView1 = (TextView)findViewById(R.id.creditsView1);
+        TextView creditsView2 = (TextView)findViewById(R.id.creditsView2);
+        TextView creditsView3 = (TextView)findViewById(R.id.creditsView3);
+        if (creditsView1.getVisibility() == View.GONE)
         {
-            creditsView.setVisibility(View.VISIBLE);
+            creditsView1.setVisibility(View.VISIBLE);
+            creditsView2.setVisibility(View.VISIBLE);
+            creditsView3.setVisibility(View.VISIBLE);
         }
-        else if (creditsView.getVisibility() == View.VISIBLE)
+        else if (creditsView1.getVisibility() == View.VISIBLE)
         {
-            creditsView.setVisibility(View.GONE);
+            creditsView1.setVisibility(View.GONE);
+            creditsView2.setVisibility(View.GONE);
+            creditsView3.setVisibility(View.GONE);
         }
     }
 

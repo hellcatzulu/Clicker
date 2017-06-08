@@ -4,14 +4,11 @@
     <string name="clickPSViewBase">0 clicks per second</string>
     <string name="clicker">CLICK</string>
     <string name="store">STORE</string>
-    <string name="creditsView">Programming: HELLCAT-ZULU; Inspiration: my family</string>
+    <string name="creditsView1">Programming: HELLCAT-ZULU</string>
+    <string name="creditsView2">QA: Wulfgaard117</string>
+    <string name="creditsView3">Thanks and inspiration: my family</string>
     <string name="credits">CREDITS</string>
     <string name="title_activity_main">Clicker</string>
     <string name="clickView">%1$d CLICKS</string>
     <string name="clickPSView">%1$d clicks per second</string>
-    <!-- <plurals name="clickPSView">
-        <item quantity="zero">0 clicks per second</item>
-        <item quantity="one">1 click per second</item>
-        <item quantity="other">%1$d clicks per second</item>
-    </plurals> -->
 </resources>

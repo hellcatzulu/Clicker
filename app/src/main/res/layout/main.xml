@@ -55,13 +55,36 @@
         android:onClick="viewCredits" />
 
     <TextView
-        android:id="@+id/creditsView"
+        android:id="@+id/creditsView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/creditsView"
+        android:text="@string/creditsView1"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
         android:textSize="12sp"
         android:textStyle="italic"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/creditsView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/creditsView2"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/creditsView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/creditsView3"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
+
 </LinearLayout>

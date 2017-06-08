@@ -9,9 +9,16 @@ public class ClickService extends IntentService
     private final Handler cps = new Handler();
     private final Runnable addClicks = new Runnable()
     {
-        public void run()
-        {
+        public void run() {
             variables.clicks = variables.clicks + variables.cps;
+            if (!main.run)
+            {
+                cps.removeCallbacksAndMessages(null);
+            }
+            else if (main.run)
+            {
+                cps.postDelayed(addClicks, 1000);
+            }
         }
     };
     public ClickService()
@@ -21,16 +28,6 @@ public class ClickService extends IntentService
     @Override
     protected void onHandleIntent(Intent activeClick)
     {
-        if (!main.run)
-        {
-            cps.removeCallbacksAndMessages(addClicks);
-        }
-        else
-        {
-            while (main.run)
-            {
-                cps.postDelayed(addClicks, 1000);
-            }
-        }
+        cps.postDelayed(addClicks, 1000);
     }
 }
