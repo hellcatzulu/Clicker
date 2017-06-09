@@ -90,6 +90,12 @@ public class main extends Activity
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
     }
 
+    public void openStore (View store)
+    {
+        Intent newStore = new Intent(this, store.class);
+        this.startActivity(newStore);
+    }
+
     public void viewCredits (View credits)
     {
         TextView creditsView1 = (TextView)findViewById(R.id.creditsView1);

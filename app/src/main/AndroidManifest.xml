@@ -20,8 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ClickService"
-                 android:exported="false"/>
+
+        <service
+            android:name=".ClickService"
+            android:exported="false" />
+
+        <activity android:name=".store"></activity>
     </application>
 
 </manifest>

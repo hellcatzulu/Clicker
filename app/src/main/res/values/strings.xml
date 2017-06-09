@@ -11,4 +11,7 @@
     <string name="title_activity_main">Clicker</string>
     <string name="clickView">%1$d CLICKS</string>
     <string name="clickPSView">%1$d clicks per second</string>
+    <string name="clickViewStore">%1$d Clicks Available</string>
+    <string name="clickPSViewStore">%1$d CPS</string>
+    <string name="storeHeader">STORE</string>
 </resources>
