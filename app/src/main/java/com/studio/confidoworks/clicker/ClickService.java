@@ -9,16 +9,11 @@ public class ClickService extends IntentService
     private final Handler cps = new Handler();
     private final Runnable addClicks = new Runnable()
     {
-        public void run() {
+        public void run()
+        {
             variables.clicks = variables.clicks + variables.cps;
-            if (!main.run)
-            {
-                cps.removeCallbacksAndMessages(null);
-            }
-            else if (main.run)
-            {
-                cps.postDelayed(addClicks, 1000);
-            }
+            if (!variables.run) cps.removeCallbacksAndMessages(null);
+            else if (variables.run) cps.postDelayed(addClicks, 1000);
         }
     };
     public ClickService()

@@ -2,6 +2,7 @@ package com.studio.confidoworks.clicker;
 
 class variables
 {
+    static boolean run;
     static int clicks;
     static int cps;
     static int clicksPC;
