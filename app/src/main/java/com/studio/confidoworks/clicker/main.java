@@ -7,11 +7,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class main extends Activity
 {
-    private static final String PREFS_NAME="save";
+    private static final String PREFS_NAME_MAIN="clicker";
     private final Context app = this;
     private boolean newStoreOpened = false;
     private final Handler update = new Handler();
@@ -23,6 +24,7 @@ public class main extends Activity
             {
                 TextView clickView = (TextView)findViewById(R.id.clickView);
                 clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                storeAvailability();
                 update.postDelayed(updateClicks, 500);
             }
             else if (!variables.run) update.removeCallbacksAndMessages(null);
@@ -58,6 +60,7 @@ public class main extends Activity
         TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+        storeAvailability();
     }
 
     @Override
@@ -68,6 +71,7 @@ public class main extends Activity
         TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+        storeAvailability();
         update.post(updateClicks);
     }
 
@@ -75,15 +79,22 @@ public class main extends Activity
     protected void onPause()
     {
         super.onPause();
-        fullSave();
+        save();
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-        if (!newStoreOpened) variables.run = false;
-        fullSave();
+        if (!newStoreOpened)
+        {
+            variables.run = false;
+            SharedPreferences timeSave = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
+            SharedPreferences.Editor timeSaver = timeSave.edit();
+            timeSaver.putLong("stopped", System.currentTimeMillis());
+            timeSaver.apply();
+        }
+        save();
     }
 
     public void click(View clicker)
@@ -91,6 +102,7 @@ public class main extends Activity
         variables.clicks = variables.clicks + variables.clicksPC;
         TextView clickView = (TextView)findViewById(R.id.clickView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+        storeAvailability();
     }
 
     public void openStore (View store)
@@ -119,32 +131,36 @@ public class main extends Activity
         }
     }
 
+    private void storeAvailability()
+    {
+        Button store = (Button)findViewById(R.id.store);
+        SharedPreferences storeReader = app.getSharedPreferences("store", 0);
+        variables.store1Price = storeReader.getInt("store1Price", 5);
+        variables.store2Price = storeReader.getInt("store2Price", 10);
+        variables.store3Price = storeReader.getInt("store3Price", 15);
+        if (variables.store1Price <= variables.clicks) store.setEnabled(true);
+        else if (variables.store2Price <= variables.clicks) store.setEnabled(true);
+        else if (variables.store3Price <= variables.clicks) store.setEnabled(true);
+        else store.setEnabled(false);
+    }
+
     private void load()
     {
-        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
         variables.run = varReader.getBoolean("run", false);
         variables.clicks = varReader.getInt("clicks", 0);
         variables.cps = varReader.getInt("cps", 0);
         variables.clicksPC = varReader.getInt("clicksPC", 1);
-        variables.store1Num = varReader.getInt("store1Num", 0);
-        variables.store1Price = varReader.getInt("store1Price", 1);
-        variables.store2Num = varReader.getInt("store2Num", 0);
-        variables.store2Price = varReader.getInt("store2Price", 2);
     }
 
-    private void fullSave()
+    private void save()
     {
-        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
         SharedPreferences.Editor varSaver = varReader.edit();
-        varSaver.putLong("stopped", System.currentTimeMillis());
         varSaver.putBoolean("run", variables.run);
         varSaver.putInt("clicks", variables.clicks);
         varSaver.putInt("cps", variables.cps);
         varSaver.putInt("clicksPC", variables.clicksPC);
-        varSaver.putInt("store1Num", variables.store1Num);
-        varSaver.putInt("store1Price", variables.store1Price);
-        varSaver.putInt("store2Num", variables.store2Num);
-        varSaver.putInt("store2Price", variables.store2Price);
         varSaver.apply();
     }
 }

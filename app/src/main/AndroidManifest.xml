@@ -25,7 +25,9 @@
             android:name=".ClickService"
             android:exported="false" />
 
-        <activity android:name=".store"></activity>
+        <activity
+            android:name=".store"
+            android:label="@string/title_activity_store" />
     </application>
 
 </manifest>

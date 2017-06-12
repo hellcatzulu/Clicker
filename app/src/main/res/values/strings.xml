@@ -6,11 +6,12 @@
     <string name="store">STORE</string>
 
     <string name="creditsView1">Programming: HELLCAT-ZULU</string>
-    <string name="creditsView2">QA: Wulfgaard117</string>
+    <string name="creditsView2">QA: Wulfgaard117, Aviatriss</string>
     <string name="creditsView3">Thanks and inspiration: my family</string>
     <string name="credits">CREDITS</string>
 
     <string name="title_activity_main">Clicker</string>
+    <string name="title_activity_store">Store</string>
     <string name="clickView">%1$d CLICKS</string>
     <string name="clickPSView">%1$d clicks per second</string>
 
@@ -27,4 +28,9 @@
     <string name="store2Title">Clicker</string>
     <string name="store2Cost">+1 CPS, %1$d clicks</string>
     <string name="store2Bought">You have: %1$d</string>
+
+    <string name="store3Buy">BUY</string>
+    <string name="store3Title">Poker</string>
+    <string name="store3Cost">+2 CPS, %1$d clicks</string>
+    <string name="store3Bought">You have: %1$d</string>
 </resources>
