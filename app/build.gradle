@@ -51,7 +51,7 @@ android {
             signingConfig signingConfigs.defaultConfig
             renderscriptDebuggable false
             pseudoLocalesEnabled false
-            applicationIdSuffix 'release'
+            applicationIdSuffix '.release'
             versionNameSuffix 'release'
         }
         debug {
@@ -59,7 +59,7 @@ android {
             zipAlignEnabled true
             jniDebuggable true
             minifyEnabled false
-            applicationIdSuffix 'debug'
+            applicationIdSuffix '.debug'
             versionNameSuffix 'debug'
         }
     }

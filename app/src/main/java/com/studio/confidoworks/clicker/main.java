@@ -34,6 +34,11 @@ import android.widget.TextView;
 public class main extends Activity
 {
     private static final String PREFS_NAME_MAIN="clicker";
+    private static final String PREFS_NAME_STORE="store";
+
+    TextView clickView;
+    TextView clickPSView;
+
     private final Context app = this;
     private boolean newStoreOpened = false;
     private final Handler update = new Handler();
@@ -43,7 +48,6 @@ public class main extends Activity
         {
             if (variables.run)
             {
-                TextView clickView = (TextView)findViewById(R.id.clickView);
                 clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
                 storeAvailability();
                 update.postDelayed(updateClicks, 500);
@@ -57,6 +61,8 @@ public class main extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        clickView = (TextView)findViewById(R.id.clickView);
+        clickPSView = (TextView)findViewById(R.id.clickPSView);
     }
 
     @Override
@@ -77,8 +83,6 @@ public class main extends Activity
     {
         super.onRestart();
         newStoreOpened = false;
-        TextView clickView = (TextView)findViewById(R.id.clickView);
-        TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
         storeAvailability();
@@ -88,8 +92,6 @@ public class main extends Activity
     protected void onResume()
     {
         super.onResume();
-        TextView clickView = (TextView)findViewById(R.id.clickView);
-        TextView clickPSView = (TextView)findViewById(R.id.clickPSView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
         storeAvailability();
@@ -121,7 +123,6 @@ public class main extends Activity
     public void click(View clicker)
     {
         variables.clicks = variables.clicks + variables.clicksPC;
-        TextView clickView = (TextView)findViewById(R.id.clickView);
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         storeAvailability();
     }
@@ -155,10 +156,10 @@ public class main extends Activity
     private void storeAvailability()
     {
         Button store = (Button)findViewById(R.id.store);
-        SharedPreferences storeReader = app.getSharedPreferences("store", 0);
-        variables.store1Price = storeReader.getInt("store1Price", 5);
-        variables.store2Price = storeReader.getInt("store2Price", 10);
-        variables.store3Price = storeReader.getInt("store3Price", 15);
+        SharedPreferences storeReader = app.getSharedPreferences(PREFS_NAME_STORE, 0);
+        variables.store1Price = storeReader.getLong("store1Price", 5);
+        variables.store2Price = storeReader.getLong("store2Price", 10);
+        variables.store3Price = storeReader.getLong("store3Price", 15);
         if (variables.store1Price <= variables.clicks) store.setEnabled(true);
         else if (variables.store2Price <= variables.clicks) store.setEnabled(true);
         else if (variables.store3Price <= variables.clicks) store.setEnabled(true);
@@ -169,9 +170,9 @@ public class main extends Activity
     {
         SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
         variables.run = varReader.getBoolean("run", false);
-        variables.clicks = varReader.getInt("clicks", 0);
-        variables.cps = varReader.getInt("cps", 0);
-        variables.clicksPC = varReader.getInt("clicksPC", 1);
+        variables.clicks = varReader.getLong("clicks", 0);
+        variables.cps = varReader.getLong("cps", 0);
+        variables.clicksPC = varReader.getLong("clicksPC", 1);
     }
 
     private void save()
@@ -179,9 +180,9 @@ public class main extends Activity
         SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
         SharedPreferences.Editor varSaver = varReader.edit();
         varSaver.putBoolean("run", variables.run);
-        varSaver.putInt("clicks", variables.clicks);
-        varSaver.putInt("cps", variables.cps);
-        varSaver.putInt("clicksPC", variables.clicksPC);
+        varSaver.putLong("clicks", variables.clicks);
+        varSaver.putLong("cps", variables.cps);
+        varSaver.putLong("clicksPC", variables.clicksPC);
         varSaver.apply();
     }
 }
