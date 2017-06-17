@@ -52,4 +52,7 @@
     <string name="store3Title">Poker</string>
     <string name="store3Cost">+2 CPS, %1$d clicks</string>
     <string name="store3Bought">You have: %1$d</string>
+
+    <string name="dialogConfirm">Whee!!!</string>
+    <string name="dialogMessage">You have gained %1$d clicks since you last showed up. Huzzah!</string>
 </resources>
