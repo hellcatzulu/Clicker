@@ -37,13 +37,14 @@ public class main extends Activity
 {
     private static final String PREFS_NAME_MAIN="clicker";
     private static final String PREFS_NAME_STORE="store";
+    private static final String PREFS_NAME_TIME="time";
 
     TextView clickView;
     TextView clickPSView;
 
     private final Context app = this;
     private boolean newStoreOpened = false;
-    private long timeStopped;
+    private boolean showNotifier = false;
     private final Handler update = new Handler();
     private final Runnable updateClicks = new Runnable()
     {
@@ -66,6 +67,9 @@ public class main extends Activity
         setContentView(R.layout.main);
         clickView = (TextView)findViewById(R.id.clickView);
         clickPSView = (TextView)findViewById(R.id.clickPSView);
+        SharedPreferences timeRead = app.getSharedPreferences(PREFS_NAME_TIME, 0);
+        final long timeStopped = timeRead.getLong("stopped", System.currentTimeMillis());
+        if (timeStopped != System.currentTimeMillis()) showNotifier = true;
     }
 
     @Override
@@ -85,6 +89,7 @@ public class main extends Activity
     protected void onRestart()
     {
         super.onRestart();
+        if (newStoreOpened) showNotifier = false;
         newStoreOpened = false;
     }
 
@@ -113,7 +118,7 @@ public class main extends Activity
         if (!newStoreOpened)
         {
             variables.run = false;
-            SharedPreferences timeSave = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
+            SharedPreferences timeSave = app.getSharedPreferences(PREFS_NAME_TIME, 0);
             SharedPreferences.Editor timeSaver = timeSave.edit();
             timeSaver.putLong("stopped", System.currentTimeMillis());
             timeSaver.apply();
@@ -132,6 +137,7 @@ public class main extends Activity
     {
         Intent newStore = new Intent(this, store.class);
         newStoreOpened = true;
+        showNotifier = false;
         this.startActivity(newStore);
     }
 
@@ -156,10 +162,13 @@ public class main extends Activity
 
     private void timeAwayNotifier()
     {
+        SharedPreferences timeRead = app.getSharedPreferences(PREFS_NAME_TIME, 0);
+        final long timeStopped = timeRead.getLong("stopped", System.currentTimeMillis());
         long timeAway = System.currentTimeMillis() - timeStopped;
-        timeAway = timeAway / 1000;
+        timeAway /= 1000;
         final long clicksToAdd = timeAway * variables.cps;
-        if (timeAway > 300)
+        if (!showNotifier) update.post(updateClicks);
+        else if (timeAway > 300)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setPositiveButton(R.string.dialogConfirm, new DialogInterface.OnClickListener()
@@ -168,18 +177,12 @@ public class main extends Activity
                 {
                     variables.clicks += clicksToAdd;
                     clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
-                    clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+                    showNotifier = false;
                 }
             });
             builder.setMessage(String.format(getResources().getString(R.string.dialogMessage), clicksToAdd));
             AlertDialog notifier = builder.create();
             notifier.show();
-        }
-        else
-        {
-            variables.clicks += clicksToAdd;
-            clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
-            clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
         }
     }
 
@@ -203,17 +206,15 @@ public class main extends Activity
         variables.clicks = varReader.getLong("clicks", 0);
         variables.cps = varReader.getLong("cps", 0);
         variables.clicksPC = varReader.getLong("clicksPC", 1);
-        timeStopped = varReader.getLong("stopped", 0);
     }
 
     private void save()
     {
-        SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
-        SharedPreferences.Editor varSaver = varReader.edit();
-        varSaver.putBoolean("run", variables.run);
-        varSaver.putLong("clicks", variables.clicks);
-        varSaver.putLong("cps", variables.cps);
-        varSaver.putLong("clicksPC", variables.clicksPC);
-        varSaver.apply();
+        SharedPreferences.Editor varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0).edit();
+        varReader.putBoolean("run", variables.run);
+        varReader.putLong("clicks", variables.clicks);
+        varReader.putLong("cps", variables.cps);
+        varReader.putLong("clicksPC", variables.clicksPC);
+        varReader.apply();
     }
 }
