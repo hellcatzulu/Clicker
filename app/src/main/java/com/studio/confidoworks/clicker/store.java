@@ -104,11 +104,11 @@ public class store extends Activity
         TextView store1Bought = (TextView)findViewById(R.id.store1Bought);
         if (variables.clicks >= variables.store1Price)
         {
-            variables.clicks = variables.clicks - variables.store1Price;
-            variables.clicksPC = variables.clicksPC + 1;
-            variables.store1Num = variables.store1Num + 1;
+            variables.clicks -= variables.store1Price;
+            variables.clicksPC++;
+            variables.store1Num++;
             double store1Price = variables.store1Price;
-            store1Price = store1Price * 1.5;
+            store1Price *= 1.5;
             variables.store1Price = (long)Math.ceil(store1Price);
             fullSave();
             clickView.setText(String.format(getResources().getString(R.string.clickViewStore), variables.clicks));
@@ -125,11 +125,11 @@ public class store extends Activity
         TextView store2Bought = (TextView)findViewById(R.id.store2Bought);
         if (variables.clicks >= variables.store2Price)
         {
-            variables.clicks = variables.clicks - variables.store2Price;
-            variables.cps = variables.cps + 1;
-            variables.store2Num = variables.store2Num + 1;
+            variables.clicks -= variables.store2Price;
+            variables.cps++;
+            variables.store2Num++;
             double store2Price = variables.store2Price;
-            store2Price = store2Price * 1.5;
+            store2Price *= 1.5;
             variables.store2Price = (long)Math.ceil(store2Price);
             fullSave();
             clickView.setText(String.format(getResources().getString(R.string.clickViewStore), variables.clicks));
@@ -147,11 +147,11 @@ public class store extends Activity
         TextView store3Bought = (TextView)findViewById(R.id.store3Bought);
         if (variables.clicks >= variables.store3Price)
         {
-            variables.clicks = variables.clicks - variables.store3Price;
-            variables.cps = variables.cps + 2;
-            variables.store3Num = variables.store3Num + 1;
+            variables.clicks -= variables.store3Price;
+            variables.cps += 2;
+            variables.store3Num++;
             double store3Price = variables.store3Price;
-            store3Price = store3Price * 1.5;
+            store3Price *= 1.5;
             variables.store3Price = (long)Math.ceil(store3Price);
             fullSave();
             clickView.setText(String.format(getResources().getString(R.string.clickViewStore), variables.clicks));

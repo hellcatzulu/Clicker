@@ -23,7 +23,6 @@ package com.studio.confidoworks.clicker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,7 +44,6 @@ public class main extends Activity
     private final Context app = this;
     private boolean newStoreOpened = false;
     private long timeStopped;
-    private boolean showTimeAway = false;
     private final Handler update = new Handler();
     private final Runnable updateClicks = new Runnable()
     {
@@ -81,15 +79,6 @@ public class main extends Activity
             Intent activeClick = new Intent(this, ClickService.class);
             this.startService(activeClick);
         }
-        if (showTimeAway)
-        {
-            long timeAway = System.currentTimeMillis() - timeStopped;
-            timeAway = timeAway / 1000;
-            final long clicksToAdd = timeAway * variables.cps;
-            if (timeAway > 300) timeAwayNotifier();
-            else variables.clicks = variables.clicks + clicksToAdd;
-        }
-        showTimeAway = false;
     }
 
     @Override
@@ -107,6 +96,7 @@ public class main extends Activity
         clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
         storeAvailability();
         update.post(updateClicks);
+        timeAwayNotifier();
     }
 
     @Override
@@ -123,11 +113,9 @@ public class main extends Activity
         if (!newStoreOpened)
         {
             variables.run = false;
-            showTimeAway = true;
             SharedPreferences timeSave = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
             SharedPreferences.Editor timeSaver = timeSave.edit();
             timeSaver.putLong("stopped", System.currentTimeMillis());
-            timeSaver.putBoolean("showTimeAway", showTimeAway);
             timeSaver.apply();
         }
         save();
@@ -135,7 +123,7 @@ public class main extends Activity
 
     public void click(View clicker)
     {
-        variables.clicks = variables.clicks + variables.clicksPC;
+        variables.clicks += variables.clicksPC;
         clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
         storeAvailability();
     }
@@ -166,23 +154,33 @@ public class main extends Activity
         }
     }
 
-    private Dialog timeAwayNotifier()
+    private void timeAwayNotifier()
     {
         long timeAway = System.currentTimeMillis() - timeStopped;
         timeAway = timeAway / 1000;
         final long clicksToAdd = timeAway * variables.cps;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton(R.string.dialogConfirm, new DialogInterface.OnClickListener()
+        if (timeAway > 300)
         {
-            public void onClick(DialogInterface notifier, int id)
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton(R.string.dialogConfirm, new DialogInterface.OnClickListener()
             {
-                variables.clicks = variables.clicks + clicksToAdd;
-                clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
-                clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
-            }
-        });
-        builder.setMessage(String.format(getResources().getString(R.string.dialogMessage), clicksToAdd));
-        return builder.create();
+                public void onClick(DialogInterface notifier, int id)
+                {
+                    variables.clicks += clicksToAdd;
+                    clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                    clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+                }
+            });
+            builder.setMessage(String.format(getResources().getString(R.string.dialogMessage), clicksToAdd));
+            AlertDialog notifier = builder.create();
+            notifier.show();
+        }
+        else
+        {
+            variables.clicks += clicksToAdd;
+            clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+            clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+        }
     }
 
     private void storeAvailability()
@@ -206,7 +204,6 @@ public class main extends Activity
         variables.cps = varReader.getLong("cps", 0);
         variables.clicksPC = varReader.getLong("clicksPC", 1);
         timeStopped = varReader.getLong("stopped", 0);
-        showTimeAway = varReader.getBoolean("showTimeAway", false);
     }
 
     private void save()

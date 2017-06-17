@@ -32,7 +32,7 @@ public class ClickService extends IntentService
     {
         public void run()
         {
-            variables.clicks = variables.clicks + variables.cps;
+            variables.clicks += variables.cps;
             if (!variables.run) cps.removeCallbacksAndMessages(null);
             else if (variables.run) cps.postDelayed(addClicks, 1000);
         }
