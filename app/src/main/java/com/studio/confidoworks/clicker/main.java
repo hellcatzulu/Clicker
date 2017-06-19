@@ -32,6 +32,9 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static android.app.ActivityManager.isUserAMonkey;
 
 public class main extends Activity
 {
@@ -102,6 +105,12 @@ public class main extends Activity
         storeAvailability();
         update.post(updateClicks);
         timeAwayNotifier();
+        if (isUserAMonkey())
+        {
+            SharedPreferences run = app.getSharedPreferences("run", 0);
+            String message = run.getString("run", null);
+            Toast.makeText(app, message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -124,6 +133,12 @@ public class main extends Activity
             timeSaver.apply();
         }
         save();
+        if (isUserAMonkey())
+        {
+            SharedPreferences.Editor run = app.getSharedPreferences("run", 0).edit();
+            run.putString("run", "AAAHHH IT'S A MONKEY RUUUN!!!");
+            run.apply();
+        }
     }
 
     public void click(View clicker)
@@ -167,7 +182,22 @@ public class main extends Activity
         long timeAway = System.currentTimeMillis() - timeStopped;
         timeAway /= 1000;
         final long clicksToAdd = timeAway * variables.cps;
-        if (!showNotifier) update.post(updateClicks);
+        if (isUserAMonkey())
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton(R.string.dialogConfirm, new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface notifier, int id)
+                {
+                    variables.clicks += clicksToAdd;
+                    clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                }
+            });
+            builder.setMessage(String.format(getResources().getString(R.string.dialogMessage), clicksToAdd));
+            AlertDialog notifier = builder.create();
+            notifier.show();
+        }
+        else if (!showNotifier) update.post(updateClicks);
         else if (timeAway > 300)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
