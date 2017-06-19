@@ -36,8 +36,8 @@ android {
         applicationId "com.studio.confidoworks.clicker"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 4
-        versionName '1.3'
+        versionCode 5
+        versionName '1.4'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.defaultConfig
     }
@@ -52,7 +52,7 @@ android {
             renderscriptDebuggable false
             pseudoLocalesEnabled false
             applicationIdSuffix '.release'
-            versionNameSuffix 'release'
+            versionNameSuffix '-release'
         }
         debug {
             debuggable true
@@ -60,7 +60,7 @@ android {
             jniDebuggable true
             minifyEnabled false
             applicationIdSuffix '.debug'
-            versionNameSuffix 'debug'
+            versionNameSuffix '-debug'
         }
     }
     productFlavors {
@@ -69,18 +69,18 @@ android {
             applicationId 'com.studio.confidoworks.clicker'
             targetSdkVersion 25
             signingConfig signingConfigs.defaultConfig
-            versionCode 4
-            versionName '1.3'
-            versionNameSuffix 'free'
+            versionCode 5
+            versionName '1.4'
+            versionNameSuffix '-free'
         }
         paid {
             minSdkVersion 19
             applicationId 'com.studio.confidoworks.clicker.paid'
             signingConfig signingConfigs.defaultConfig
             targetSdkVersion 25
-            versionCode 4
-            versionName '1.3'
-            versionNameSuffix 'paid'
+            versionCode 5
+            versionName '1.4'
+            versionNameSuffix '-paid'
         }
     }
 }

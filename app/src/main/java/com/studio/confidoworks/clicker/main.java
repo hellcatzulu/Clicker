@@ -184,6 +184,12 @@ public class main extends Activity
             AlertDialog notifier = builder.create();
             notifier.show();
         }
+        else if (timeAway <= 300)
+        {
+            variables.clicks += clicksToAdd;
+            clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+            showNotifier = false;
+        }
     }
 
     private void storeAvailability()
