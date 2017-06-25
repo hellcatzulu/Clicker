@@ -31,28 +31,28 @@
 
     <string name="title_activity_main">Clicker</string>
     <string name="title_activity_store">Store</string>
-    <string name="clickView">%1$d CLICKS</string>
-    <string name="clickPSView">%1$d clicks per second</string>
+    <string name="clickView">%1$s CLICKS</string>
+    <string name="clickPSView">%1$s clicks per second</string>
 
-    <string name="clickViewStore">%1$d Clicks Available</string>
-    <string name="clickPSViewStore">%1$d CPS</string>
+    <string name="clickViewStore">%1$s Clicks Available</string>
+    <string name="clickPSViewStore">%1$s CPS</string>
     <string name="storeHeader">STORE</string>
 
     <string name="store1Buy">BUY</string>
     <string name="store1Title">Click Finger</string>
-    <string name="store1Cost">+1 to click, %1$d clicks</string>
+    <string name="store1Cost">+1 to click, %1$s clicks</string>
     <string name="store1Bought">You have: %1$d</string>
 
     <string name="store2Buy">BUY</string>
     <string name="store2Title">Clicker</string>
-    <string name="store2Cost">+1 CPS, %1$d clicks</string>
+    <string name="store2Cost">+1 CPS, %1$s clicks</string>
     <string name="store2Bought">You have: %1$d</string>
 
     <string name="store3Buy">BUY</string>
     <string name="store3Title">Poker</string>
-    <string name="store3Cost">+2 CPS, %1$d clicks</string>
+    <string name="store3Cost">+2 CPS, %1$s clicks</string>
     <string name="store3Bought">You have: %1$d</string>
 
     <string name="dialogConfirm">Whee!!!</string>
-    <string name="dialogMessage">You have gained %1$d clicks since you last showed up. Huzzah!</string>
+    <string name="dialogMessage">You have gained %1$s clicks since you last showed up. Huzzah!</string>
 </resources>

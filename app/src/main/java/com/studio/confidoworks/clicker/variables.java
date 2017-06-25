@@ -21,17 +21,20 @@
 
 package com.studio.confidoworks.clicker;
 
+import java.math.BigDecimal;
+
 class variables
 {
     static boolean run;
-    static long clicks;
-    static long cps;
-    static long clicksPC;
+    static BigDecimal clicks;
+    static BigDecimal cps;
+    static BigDecimal clicksPC;
+
 
     static int store1Num;
-    static long store1Price;
+    static BigDecimal store1Price;
     static int store2Num;
-    static long store2Price;
+    static BigDecimal store2Price;
     static int store3Num;
-    static long store3Price;
+    static BigDecimal store3Price;
 }

@@ -34,7 +34,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 import static android.app.ActivityManager.isUserAMonkey;
+import static com.studio.confidoworks.clicker.variables.clicks;
+import static com.studio.confidoworks.clicker.variables.clicksPC;
+import static com.studio.confidoworks.clicker.variables.cps;
+import static com.studio.confidoworks.clicker.variables.store1Price;
+import static com.studio.confidoworks.clicker.variables.store2Price;
+import static com.studio.confidoworks.clicker.variables.store3Price;
 
 public class main extends Activity
 {
@@ -44,6 +54,8 @@ public class main extends Activity
 
     TextView clickView;
     TextView clickPSView;
+
+    static MathContext mc = new MathContext(0, RoundingMode.CEILING);
 
     private final Context app = this;
     private boolean newStoreOpened = false;
@@ -55,7 +67,8 @@ public class main extends Activity
         {
             if (variables.run)
             {
-                clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                clickView.setText(String.format(getResources().getString(R.string.clickView),
+                        clicks.toString()));
                 storeAvailability();
                 update.postDelayed(updateClicks, 500);
             }
@@ -100,8 +113,10 @@ public class main extends Activity
     protected void onResume()
     {
         super.onResume();
-        clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
-        clickPSView.setText(String.format(getResources().getString(R.string.clickPSView), variables.cps));
+        clickView.setText(String.format(getResources().getString(R.string.clickView),
+                clicks.toString()));
+        clickPSView.setText(String.format(getResources().getString(R.string.clickPSView),
+                cps.toString()));
         storeAvailability();
         update.post(updateClicks);
         timeAwayNotifier();
@@ -127,10 +142,9 @@ public class main extends Activity
         if (!newStoreOpened)
         {
             variables.run = false;
-            SharedPreferences timeSave = app.getSharedPreferences(PREFS_NAME_TIME, 0);
-            SharedPreferences.Editor timeSaver = timeSave.edit();
-            timeSaver.putLong("stopped", System.currentTimeMillis());
-            timeSaver.apply();
+            SharedPreferences.Editor timeSave = app.getSharedPreferences(PREFS_NAME_TIME, 0).edit();
+            timeSave.putLong("stopped", System.currentTimeMillis());
+            timeSave.apply();
         }
         save();
         if (isUserAMonkey())
@@ -143,8 +157,9 @@ public class main extends Activity
 
     public void click(View clicker)
     {
-        variables.clicks += variables.clicksPC;
-        clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+        clicks = clicks.add(clicksPC);
+        clickView.setText(String.format(getResources().getString(R.string.clickView),
+                clicks.toString()));
         storeAvailability();
     }
 
@@ -179,9 +194,10 @@ public class main extends Activity
     {
         SharedPreferences timeRead = app.getSharedPreferences(PREFS_NAME_TIME, 0);
         final long timeStopped = timeRead.getLong("stopped", System.currentTimeMillis());
-        long timeAway = System.currentTimeMillis() - timeStopped;
-        timeAway /= 1000;
-        final long clicksToAdd = timeAway * variables.cps;
+        BigDecimal timeAway = BigDecimal.valueOf(System.currentTimeMillis() - timeStopped);
+        timeAway = timeAway.divide(new BigDecimal("1000"), mc);
+        timeAway = timeAway.setScale(0, RoundingMode.CEILING);
+        final BigDecimal clicksToAdd = cps.multiply(timeAway);
         if (isUserAMonkey())
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -189,8 +205,9 @@ public class main extends Activity
             {
                 public void onClick(DialogInterface notifier, int id)
                 {
-                    variables.clicks += clicksToAdd;
-                    clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                    clicks = clicks.add(clicksToAdd);
+                    clickView.setText(String.format(getResources().getString(R.string.clickView),
+                            clicks.toString()));
                 }
             });
             builder.setMessage(String.format(getResources().getString(R.string.dialogMessage), clicksToAdd));
@@ -198,15 +215,16 @@ public class main extends Activity
             notifier.show();
         }
         else if (!showNotifier) update.post(updateClicks);
-        else if (timeAway > 300)
+        else if ((timeAway.compareTo(new BigDecimal("300")) > 0))
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setPositiveButton(R.string.dialogConfirm, new DialogInterface.OnClickListener()
             {
                 public void onClick(DialogInterface notifier, int id)
                 {
-                    variables.clicks += clicksToAdd;
-                    clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+                    clicks = clicks.add(clicksToAdd);
+                    clickView.setText(String.format(getResources().getString(R.string.clickView),
+                            clicks.toString()));
                     showNotifier = false;
                 }
             });
@@ -214,10 +232,11 @@ public class main extends Activity
             AlertDialog notifier = builder.create();
             notifier.show();
         }
-        else if (timeAway <= 300)
+        else if ((timeAway.compareTo(new BigDecimal("300")) <= 0))
         {
-            variables.clicks += clicksToAdd;
-            clickView.setText(String.format(getResources().getString(R.string.clickView), variables.clicks));
+            clicks = clicks.add(clicksToAdd);
+            clickView.setText(String.format(getResources().getString(R.string.clickView), clicks
+                    .toString()));
             showNotifier = false;
         }
     }
@@ -226,12 +245,12 @@ public class main extends Activity
     {
         Button store = (Button)findViewById(R.id.store);
         SharedPreferences storeReader = app.getSharedPreferences(PREFS_NAME_STORE, 0);
-        variables.store1Price = storeReader.getLong("store1Price", 5);
-        variables.store2Price = storeReader.getLong("store2Price", 10);
-        variables.store3Price = storeReader.getLong("store3Price", 15);
-        if (variables.store1Price <= variables.clicks) store.setEnabled(true);
-        else if (variables.store2Price <= variables.clicks) store.setEnabled(true);
-        else if (variables.store3Price <= variables.clicks) store.setEnabled(true);
+        store1Price = new BigDecimal(storeReader.getString("store1Price", "5"));
+        store2Price = new BigDecimal(storeReader.getString("store2Price", "10"));
+        store3Price = new BigDecimal(storeReader.getString("store3Price", "15"));
+        if ((store1Price.compareTo(clicks)) <= 0) store.setEnabled(true);
+        else if ((store2Price.compareTo(clicks)) <= 0) store.setEnabled(true);
+        else if ((store3Price.compareTo(clicks)) <= 0) store.setEnabled(true);
         else store.setEnabled(false);
     }
 
@@ -239,18 +258,18 @@ public class main extends Activity
     {
         SharedPreferences varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0);
         variables.run = varReader.getBoolean("run", false);
-        variables.clicks = varReader.getLong("clicks", 0);
-        variables.cps = varReader.getLong("cps", 0);
-        variables.clicksPC = varReader.getLong("clicksPC", 1);
+        clicks = new BigDecimal(varReader.getString("clicks", "0"));
+        cps = new BigDecimal(varReader.getString("cps", "0"));
+        clicksPC = new BigDecimal(varReader.getString("clicksPC", "1"));
     }
 
     private void save()
     {
         SharedPreferences.Editor varReader = app.getSharedPreferences(PREFS_NAME_MAIN, 0).edit();
         varReader.putBoolean("run", variables.run);
-        varReader.putLong("clicks", variables.clicks);
-        varReader.putLong("cps", variables.cps);
-        varReader.putLong("clicksPC", variables.clicksPC);
+        varReader.putString("clicks", clicks.toString());
+        varReader.putString("cps", cps.toString());
+        varReader.putString("clicksPC", clicksPC.toString());
         varReader.apply();
     }
 }
